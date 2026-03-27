@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swayam — Reimagined</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS — LIGHT MODE
+═══════════════════════════════════════════ */
+:root {
+  /* Surfaces */
+  --bg:       #F7F8FC;
+  --surface:  #FFFFFF;
+  --surface2: #F0F2F9;
+  --surface3: #E8EBF5;
+
+  /* Text */
+  --ink:      #1A1D2E;
+  --ink2:     #3D4166;
+  --muted:    #7478A0;
+  --subtle:   #A8ADCC;
+
+  /* Brand */
+  --primary:    #3D52D5;   /* indigo */
+  --primary-lt: #EEF1FF;
+  --primary-dk: #2A3AAF;
+
+  /* Discipline accent palette */
+  --cs-c:   #3D52D5; --cs-lt:   #EEF1FF;
+  --math-c: #0F9E7B; --math-lt: #E6F7F3;
+  --ee-c:   #D97706; --ee-lt:   #FEF3C7;
+  --mgmt-c: #9333EA; --mgmt-lt: #F3E8FF;
+  --phys-c: #0284C7; --phys-lt: #E0F2FE;
+  --chem-c: #DC2626; --chem-lt: #FEE2E2;
+  --bio-c:  #16A34A; --bio-lt:  #DCFCE7;
+  --civil-c:#B45309; --civil-lt:#FEF3C7;
+
+  /* Semantic */
+  --success:  #16A34A; --success-lt: #DCFCE7;
+  --warning:  #D97706; --warning-lt: #FEF3C7;
+  --danger:   #DC2626; --danger-lt:  #FEE2E2;
+  --info:     #0284C7; --info-lt:    #E0F2FE;
+
+  /* Borders & Shadows */
+  --line:       rgba(26,29,46,0.08);
+  --line2:      rgba(26,29,46,0.14);
+  --shadow-sm:  0 1px 3px rgba(26,29,46,0.06), 0 1px 2px rgba(26,29,46,0.04);
+  --shadow-md:  0 4px 16px rgba(26,29,46,0.08), 0 2px 6px rgba(26,29,46,0.04);
+  --shadow-lg:  0 12px 40px rgba(26,29,46,0.12), 0 4px 12px rgba(26,29,46,0.06);
+
+  /* Typography */
+  --ff-display: 'Fraunces', Georgia, serif;
+  --ff-body:    'Plus Jakarta Sans', sans-serif;
+  --ff-mono:    'IBM Plex Mono', monospace;
+
+  /* Radii */
+  --r-xs: 6px;  --r-sm: 10px;  --r-md: 14px;
+  --r-lg: 18px; --r-xl: 24px;
+}
+
+/* ═══════════════════════════════════════════  RESET  */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--ff-body); background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: var(--ff-body); border: none; background: none; }
+svg { display: block; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════  PAGE SYSTEM  */
+.page { display: none; min-height: 100vh; animation: pageIn 0.3s ease both; }
+.page.active { display: block; }
+@keyframes pageIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ════════════════════════════════════════════
+   TOPBAR
+════════════════════════════════════════════ */
+.topbar {
+  position: sticky; top: 0; z-index: 300;
+  height: 58px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center;
+  padding: 0 28px; gap: 0;
+  box-shadow: var(--shadow-sm);
+}
+.topbar-logo { display:flex; align-items:center; gap:10px; margin-right:auto; cursor:pointer; }
+.logo-sq {
+  width:32px; height:32px; border-radius:9px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dk));
+  display:grid; place-items:center;
+  font-family: var(--ff-display); font-size:17px; font-weight:700; font-style:italic; color:white;
+  box-shadow: 0 2px 8px rgba(61,82,213,0.35);
+}
+.logo-wordmark { font-family:var(--ff-display); font-size:16px; font-weight:500; color:var(--ink); letter-spacing:0.01em; }
+.logo-wordmark em { color:var(--primary); font-style:normal; font-weight:700; }
+
+.topbar-nav { display:flex; align-items:center; gap:1px; margin-right:18px; }
+.topbar-nav button {
+  padding:6px 14px; border-radius:var(--r-xs);
+  font-size:13px; font-weight:500; color:var(--muted);
+  transition:all 0.16s; letter-spacing:0.01em;
+}
+.topbar-nav button:hover { color:var(--ink); background:var(--surface2); }
+.topbar-nav button.active { color:var(--primary); background:var(--primary-lt); font-weight:600; }
+
+.topbar-actions { display:flex; align-items:center; gap:8px; }
+.icon-btn {
+  width:34px; height:34px; border-radius:var(--r-xs);
+  display:grid; place-items:center;
+  color:var(--muted); transition:all 0.16s;
+}
+.icon-btn:hover { background:var(--surface2); color:var(--ink); }
+.avatar-btn {
+  width:34px; height:34px; border-radius:50%;
+  background: linear-gradient(135deg, #3D52D5, #7B68EE);
+  display:grid; place-items:center;
+  font-size:12px; font-weight:700; color:white;
+  box-shadow: 0 2px 6px rgba(61,82,213,0.3);
+}
+
+/* ════════════════════════════════════════════
+   PAGE 1 — COURSE CATALOG
+════════════════════════════════════════════ */
+.home-hero {
+  background: linear-gradient(135deg, #1A1D2E 0%, #2A2F52 50%, #1e2d5a 100%);
+  padding: 56px 52px 0;
+  position: relative; overflow: hidden;
+}
+.home-hero::before {
+  content:''; position:absolute; top:-120px; right:-80px;
+  width:560px; height:560px; border-radius:50%;
+  background: radial-gradient(ellipse, rgba(61,82,213,0.3) 0%, transparent 65%);
+  pointer-events:none;
+}
+.home-hero::after {
+  content:''; position:absolute; bottom:-1px; left:-1px; right:-1px; height:40px;
+  background: var(--bg);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(61,82,213,0.2); border:1px solid rgba(61,82,213,0.35);
+  border-radius:20px; padding:4px 12px;
+  font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  color:#8FA3FF; margin-bottom:20px;
+}
+.blink { width:6px; height:6px; border-radius:50%; background:#8FA3FF; animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-title {
+  font-family: var(--ff-display);
+  font-size: clamp(34px, 4.5vw, 54px);
+  font-weight: 300; font-style: italic;
+  color: #F0F2FF; line-height: 1.12; letter-spacing: -0.02em;
+  max-width: 680px; margin-bottom: 16px;
+}
+.hero-title strong { font-weight:700; font-style:normal; color:#7B9FFF; }
+
+.hero-sub { font-size:15px; color:rgba(240,242,255,0.5); max-width:500px; line-height:1.75; margin-bottom:30px; font-weight:300; }
+
+.hero-cta-row { display:flex; gap:10px; margin-bottom:48px; align-items:center; }
+.btn-primary {
+  padding:10px 22px; background:var(--primary);
+  color:white; font-size:13.5px; font-weight:600;
+  border-radius:var(--r-sm); transition:all 0.2s; letter-spacing:0.01em;
+  box-shadow: 0 2px 12px rgba(61,82,213,0.4);
+}
+.btn-primary:hover { background:var(--primary-dk); transform:translateY(-1px); box-shadow:0 4px 18px rgba(61,82,213,0.5); }
+.btn-ghost {
+  padding:10px 22px; background:rgba(255,255,255,0.08);
+  border:1.5px solid rgba(255,255,255,0.15);
+  color:rgba(240,242,255,0.75); font-size:13.5px; font-weight:500;
+  border-radius:var(--r-sm); transition:all 0.2s;
+}
+.btn-ghost:hover { background:rgba(255,255,255,0.13); color:#F0F2FF; border-color:rgba(255,255,255,0.3); }
+
+.hero-stats { display:flex; gap:48px; padding:22px 0 30px; border-top:1px solid rgba(255,255,255,0.08); }
+.hero-stat-num { font-family:var(--ff-display); font-size:26px; font-weight:700; color:#F0F2FF; line-height:1; }
+.hero-stat-label { font-size:10.5px; color:rgba(240,242,255,0.4); margin-top:4px; letter-spacing:0.06em; text-transform:uppercase; }
+
+/* ── Discipline Filter Bar ── */
+.filter-bar {
+  padding: 18px 52px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+.filter-label {
+  font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--subtle); margin-right:4px; white-space:nowrap;
+}
+.disc-chip {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 14px; border-radius:20px;
+  border:1.5px solid var(--line2);
+  background:var(--surface);
+  font-size:12.5px; font-weight:500; color:var(--muted);
+  cursor:pointer; transition:all 0.18s; white-space:nowrap;
+}
+.disc-chip:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-lt); }
+.disc-chip.active { background:var(--primary); color:white; border-color:var(--primary); box-shadow:0 2px 8px rgba(61,82,213,0.25); }
+.disc-chip .chip-icon { opacity:0.75; }
+.disc-chip.active .chip-icon { opacity:1; }
+
+/* Discipline-specific active colors */
+.disc-chip.active[data-disc="cs"]   { background:var(--cs-c);   border-color:var(--cs-c);   box-shadow:0 2px 8px rgba(61,82,213,0.25); }
+.disc-chip.active[data-disc="math"] { background:var(--math-c); border-color:var(--math-c); box-shadow:0 2px 8px rgba(15,158,123,0.25); }
+.disc-chip.active[data-disc="ee"]   { background:var(--ee-c);   border-color:var(--ee-c);   box-shadow:0 2px 8px rgba(217,119,6,0.25); }
+.disc-chip.active[data-disc="mgmt"] { background:var(--mgmt-c); border-color:var(--mgmt-c); box-shadow:0 2px 8px rgba(147,51,234,0.25); }
+.disc-chip.active[data-disc="phys"] { background:var(--phys-c); border-color:var(--phys-c); box-shadow:0 2px 8px rgba(2,132,199,0.25); }
+.disc-chip.active[data-disc="chem"] { background:var(--chem-c); border-color:var(--chem-c); box-shadow:0 2px 8px rgba(220,38,38,0.25); }
+
+/* ── Course Grid ── */
+.catalog-section { padding:32px 52px; }
+.catalog-section-header { display:flex; align-items:baseline; gap:10px; margin-bottom:20px; }
+.catalog-section-title { font-family:var(--ff-display); font-size:21px; font-weight:500; font-style:italic; color:var(--ink); }
+.catalog-count { font-size:12px; color:var(--muted); background:var(--surface2); padding:2px 9px; border-radius:10px; }
+.see-all { margin-left:auto; font-size:12.5px; font-weight:600; color:var(--primary); }
+.see-all:hover { text-decoration:underline; }
+
+.course-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:18px; }
+
+.course-card {
+  background:var(--surface);
+  border:1.5px solid var(--line);
+  border-radius:var(--r-lg);
+  overflow:hidden; cursor:pointer;
+  transition:all 0.22s;
+  box-shadow: var(--shadow-sm);
+}
+.course-card:hover {
+  border-color:var(--line2);
+  box-shadow:var(--shadow-lg);
+  transform:translateY(-3px);
+}
+
+.course-thumb {
+  height:120px; position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.ct-cs   { background:linear-gradient(135deg,#3D52D5 0%,#1e2d8a 100%); }
+.ct-math { background:linear-gradient(135deg,#0F9E7B 0%,#056b52 100%); }
+.ct-ee   { background:linear-gradient(135deg,#D97706 0%,#92470a 100%); }
+.ct-mgmt { background:linear-gradient(135deg,#9333EA 0%,#5b1d9e 100%); }
+.ct-phys { background:linear-gradient(135deg,#0284C7 0%,#024f7a 100%); }
+.ct-chem { background:linear-gradient(135deg,#DC2626 0%,#8b0e0e 100%); }
+
+.ct-dots {
+  position:absolute; inset:0; opacity:0.07;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size:18px 18px;
+}
+.ct-icon {
+  position:relative; z-index:1;
+  width:44px; height:44px; border-radius:12px;
+  background:rgba(255,255,255,0.15);
+  display:grid; place-items:center;
+  backdrop-filter:blur(4px);
+}
+.ct-icon svg { color:rgba(255,255,255,0.9); }
+.thumb-inst-badge {
+  position:absolute; bottom:8px; right:10px; z-index:2;
+  background:rgba(0,0,0,0.4); backdrop-filter:blur(8px);
+  border-radius:5px; padding:2px 7px;
+  font-family:var(--ff-mono); font-size:9.5px; color:rgba(255,255,255,0.8);
+  letter-spacing:0.04em;
+}
+.thumb-week-badge {
+  position:absolute; top:8px; right:10px; z-index:2;
+  background:rgba(0,0,0,0.35); backdrop-filter:blur(8px);
+  border-radius:5px; padding:2px 7px;
+  font-family:var(--ff-mono); font-size:9px; color:rgba(255,255,255,0.7);
+}
+.thumb-progress { position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,0.15); }
+.thumb-progress-fill { height:100%; background:rgba(255,255,255,0.8); border-radius:2px; }
+
+.course-card-body { padding:16px 18px 18px; }
+.cc-dept {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  margin-bottom:6px;
+}
+.cc-title { font-family:var(--ff-display); font-size:15.5px; font-weight:500; line-height:1.3; margin-bottom:8px; color:var(--ink); }
+.cc-meta { font-size:11.5px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.cc-meta .sep { opacity:0.35; }
+
+.cc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--line); }
+.cc-inst { display:flex; align-items:center; gap:7px; }
+.inst-dot {
+  width:22px; height:22px; border-radius:50%;
+  display:grid; place-items:center;
+  font-size:8px; font-weight:700; color:white; flex-shrink:0;
+}
+.inst-name { font-size:11px; font-weight:500; color:var(--muted); }
+.cc-action {
+  width:26px; height:26px; border-radius:50%;
+  background:var(--surface2); color:var(--muted);
+  display:grid; place-items:center; font-size:13px;
+  transition:all 0.16s;
+}
+.course-card:hover .cc-action { background:var(--primary); color:white; }
+
+/* ════════════════════════════════════════════
+   PAGE 2 — COURSE / VIDEO PLAYER
+════════════════════════════════════════════ */
+.course-layout { display:grid; grid-template-columns:300px 1fr; min-height:calc(100vh - 58px); }
+
+.course-sidebar {
+  background:var(--ink);
+  position:sticky; top:58px;
+  height:calc(100vh - 58px);
+  overflow-y:auto; display:flex; flex-direction:column;
+  border-right:1px solid rgba(255,255,255,0.05);
+}
+.course-sidebar::-webkit-scrollbar { width:3px; }
+.course-sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:2px; }
+
+.cs-header { padding:22px 18px 16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.cs-dept { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#7B9FFF; margin-bottom:5px; }
+.cs-title { font-family:var(--ff-display); font-size:14.5px; font-weight:400; font-style:italic; color:rgba(240,242,255,0.9); line-height:1.35; margin-bottom:14px; }
+.cs-prog-label { display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.35); margin-bottom:6px; }
+.cs-prog-label strong { color:#7B9FFF; font-size:13px; }
+.cs-prog-track { height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+.cs-prog-fill { height:100%; background:linear-gradient(90deg,#3D52D5,#7B9FFF); animation:fillW 1s ease-out; }
+@keyframes fillW { from { width:0 !important; } }
+
+.cs-outline { flex:1; padding:8px 0; }
+.ow-group {}
+.ow-header {
+  display:flex; align-items:center; gap:9px;
+  padding:9px 18px; cursor:pointer; transition:background 0.15s;
+  border-left:2px solid transparent;
+}
+.ow-header:hover { background:rgba(255,255,255,0.03); }
+.ow-header.active { border-left-color:#3D52D5; background:rgba(61,82,213,0.08); }
+.ow-num { font-family:var(--ff-mono); font-size:9px; color:rgba(255,255,255,0.25); letter-spacing:0.08em; width:36px; flex-shrink:0; }
+.ow-title { font-size:11.5px; font-weight:500; color:rgba(255,255,255,0.55); flex:1; line-height:1.35; }
+.ow-header.active .ow-title { color:rgba(255,255,255,0.9); }
+.ow-arr { font-size:9px; color:rgba(255,255,255,0.2); transition:transform 0.2s; flex-shrink:0; }
+.ow-header.open .ow-arr { transform:rotate(90deg); }
+
+.ow-lessons { display:none; }
+.ow-lessons.open { display:block; }
+.ow-lesson {
+  display:flex; align-items:flex-start; gap:9px;
+  padding:7px 18px 7px 32px; cursor:pointer; transition:background 0.14s;
+  border-left:2px solid transparent;
+}
+.ow-lesson:hover { background:rgba(255,255,255,0.025); }
+.ow-lesson.done { }
+.ow-lesson.current { border-left-color:#7B9FFF; background:rgba(61,82,213,0.07); }
+.ol-ic { font-size:10px; margin-top:2px; color:rgba(255,255,255,0.25); flex-shrink:0; }
+.ow-lesson.done .ol-ic { color:#34D399; }
+.ow-lesson.current .ol-ic { color:#7B9FFF; }
+.ol-txt { font-size:11px; color:rgba(255,255,255,0.4); line-height:1.4; }
+.ow-lesson.done .ol-txt { color:rgba(255,255,255,0.6); }
+.ow-lesson.current .ol-txt { color:rgba(255,255,255,0.9); font-weight:500; }
+.ol-dur { font-family:var(--ff-mono); font-size:9px; color:rgba(255,255,255,0.18); margin-top:2px; }
+
+/* Video area */
+.course-main { background:var(--bg); overflow-y:auto; }
+.vp-wrap { background:#0d0e17; }
+.vp-stage {
+  width:100%; aspect-ratio:16/9;
+  background:radial-gradient(ellipse at 50% 55%, #1b2040 0%, #090b14 100%);
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.vp-grid {
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+.vp-glow { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%,rgba(61,82,213,0.15) 0%,transparent 60%); }
+.vp-play-btn {
+  position:relative; z-index:2;
+  width:62px; height:62px; border-radius:50%;
+  background:var(--primary);
+  display:grid; place-items:center; cursor:pointer;
+  box-shadow:0 0 0 0 rgba(61,82,213,0.4);
+  animation:ripple 2.5s infinite;
+  transition:transform 0.2s, background 0.2s;
+}
+.vp-play-btn:hover { transform:scale(1.08); background:var(--primary-dk); }
+@keyframes ripple { 0%{box-shadow:0 0 0 0 rgba(61,82,213,0.4)} 70%{box-shadow:0 0 0 22px rgba(61,82,213,0)} 100%{box-shadow:0 0 0 0 rgba(61,82,213,0)} }
+
+.vp-info { position:absolute; bottom:22px; left:22px; z-index:2; }
+.vp-wk { font-family:var(--ff-mono); font-size:9.5px; color:rgba(255,255,255,0.4); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:4px; }
+.vp-lt { font-family:var(--ff-display); font-size:17px; font-weight:300; font-style:italic; color:rgba(255,255,255,0.88); }
+
+.vp-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:3;
+  background:linear-gradient(transparent,rgba(0,0,0,0.7));
+  height:44px; display:flex; align-items:flex-end; padding:0 14px 9px; gap:10px;
+}
+.vp-timeline { flex:1; height:3px; background:rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; }
+.vp-tl-fill { height:100%; width:34%; background:var(--primary); border-radius:2px; }
+.vp-time { font-family:var(--ff-mono); font-size:10px; color:rgba(255,255,255,0.55); }
+.vp-ic { color:rgba(255,255,255,0.6); cursor:pointer; transition:color 0.15s; font-size:12px; }
+.vp-ic:hover { color:white; }
+
+.content-tabs {
+  background:var(--surface); border-bottom:1px solid var(--line);
+  display:flex; padding:0 28px;
+  position:sticky; top:58px; z-index:10;
+  box-shadow:var(--shadow-sm);
+}
+.ct-tab {
+  padding:14px 0; margin-right:24px;
+  font-size:13px; font-weight:500; color:var(--muted);
+  border-bottom:2px solid transparent; cursor:pointer; transition:all 0.16s; white-space:nowrap;
+}
+.ct-tab:hover { color:var(--ink); }
+.ct-tab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+
+.tab-panel { display:none; padding:26px 28px; }
+.tab-panel.active { display:block; }
+
+.lesson-meta-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.lm-chip { padding:3px 10px; border-radius:4px; font-family:var(--ff-mono); font-size:10px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; }
+.lm-week { background:var(--primary-lt); color:var(--primary); }
+.lm-dur  { background:var(--surface2); color:var(--muted); }
+
+.lesson-title-big { font-family:var(--ff-display); font-size:25px; font-weight:300; font-style:italic; line-height:1.25; color:var(--ink); margin-bottom:12px; }
+.lesson-nav-row { display:flex; gap:8px; margin-top:16px; }
+.btn-nav { padding:7px 16px; border-radius:var(--r-xs); font-size:12.5px; font-weight:600; transition:all 0.16s; }
+.btn-nav-next { background:var(--primary); color:white; box-shadow:0 2px 8px rgba(61,82,213,0.25); }
+.btn-nav-next:hover { background:var(--primary-dk); }
+.btn-nav-prev { background:var(--surface2); color:var(--muted); border:1.5px solid var(--line); }
+.btn-nav-prev:hover { color:var(--ink); border-color:var(--line2); }
+
+.lesson-desc { font-size:14px; line-height:1.78; color:var(--muted); max-width:680px; margin-bottom:22px; }
+
+.kc-block { background:var(--surface2); border-radius:var(--r-md); padding:18px 20px; margin-bottom:22px; }
+.kc-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:12px; }
+.concept-tags { display:flex; flex-wrap:wrap; gap:7px; }
+.concept-tag {
+  padding:4px 11px; border-radius:4px;
+  background:var(--surface); border:1.5px solid var(--line);
+  font-size:12px; color:var(--ink2); font-weight:500; cursor:pointer; transition:all 0.16s;
+}
+.concept-tag:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-lt); }
+
+.resources-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.res-card {
+  background:var(--surface); border:1.5px solid var(--line); border-radius:var(--r-md);
+  padding:14px 16px; display:flex; gap:12px; align-items:flex-start;
+  cursor:pointer; transition:all 0.18s;
+}
+.res-card:hover { border-color:var(--primary); box-shadow:var(--shadow-md); transform:translateY(-1px); }
+.res-icon { width:36px; height:36px; flex-shrink:0; border-radius:9px; display:grid; place-items:center; }
+.ri-pdf  { background:var(--danger-lt); color:var(--danger); }
+.ri-vid  { background:var(--success-lt); color:var(--success); }
+.ri-quiz { background:var(--warning-lt); color:var(--warning); }
+.ri-code { background:var(--primary-lt); color:var(--primary); }
+.res-title { font-size:13px; font-weight:500; margin-bottom:3px; color:var(--ink); }
+.res-meta  { font-size:11px; color:var(--muted); }
+
+/* ════════════════════════════════════════════
+   PAGE 3 — PROGRESS & ASSIGNMENTS
+════════════════════════════════════════════ */
+.progress-layout { display:grid; grid-template-columns:1fr 340px; min-height:calc(100vh - 58px); }
+.progress-main { padding:32px 40px; background:var(--bg); }
+.progress-right { background:var(--surface); padding:24px 20px; border-left:1px solid var(--line); }
+
+.page-heading { font-family:var(--ff-display); font-size:28px; font-weight:300; font-style:italic; color:var(--ink); margin-bottom:4px; }
+.page-sub { font-size:13px; color:var(--muted); margin-bottom:28px; }
+
+.score-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+.score-card {
+  background:var(--surface); border:1.5px solid var(--line);
+  border-radius:var(--r-lg); padding:20px; position:relative; overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.score-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--sc,var(--primary)); }
+.sc-num { font-family:var(--ff-display); font-size:34px; font-weight:700; color:var(--ink); line-height:1; margin-bottom:4px; }
+.sc-unit { font-size:16px; font-weight:300; }
+.sc-label { font-size:12px; color:var(--muted); margin-bottom:10px; }
+.sc-bar { height:3px; background:var(--line); border-radius:2px; overflow:hidden; }
+.sc-fill { height:100%; border-radius:2px; background:var(--sc,var(--primary)); }
+
+.asgn-table { background:var(--surface); border:1.5px solid var(--line); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+.asgn-thead { display:grid; grid-template-columns:2fr 1fr 1fr 1.1fr 80px; padding:11px 20px; background:var(--surface2); border-bottom:1px solid var(--line); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--subtle); }
+.asgn-row {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1.1fr 80px;
+  padding:14px 20px; border-bottom:1px solid var(--line);
+  align-items:center; transition:background 0.14s; cursor:pointer;
+}
+.asgn-row:last-child { border-bottom:none; }
+.asgn-row:hover { background:var(--surface2); }
+.ar-title { font-size:13px; font-weight:500; color:var(--ink); }
+.ar-week  { font-size:12px; color:var(--muted); }
+.ar-score { font-family:var(--ff-mono); font-size:12.5px; font-weight:600; }
+.score-hi { color:var(--success); }
+.score-md { color:var(--warning); }
+.score-na { color:var(--subtle); }
+.badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 9px; border-radius:4px;
+  font-size:10px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+}
+.badge-done   { background:var(--success-lt); color:var(--success); }
+.badge-pend   { background:var(--warning-lt); color:var(--warning); }
+.badge-soon   { background:var(--surface2); color:var(--subtle); }
+.ar-act { font-size:12px; font-weight:600; color:var(--primary); cursor:pointer; }
+.ar-act:hover { text-decoration:underline; }
+
+.ps-title { font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--subtle); margin-bottom:14px; }
+.wk-prog-list { display:flex; flex-direction:column; gap:9px; margin-bottom:24px; }
+.wk-prog-item {}
+.wkp-hd { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
+.wkp-name { font-weight:500; color:var(--ink); }
+.wkp-pct  { font-family:var(--ff-mono); font-size:11px; color:var(--muted); }
+.wkp-bar { height:4px; background:var(--surface2); border-radius:2px; overflow:hidden; }
+.wkp-fill { height:100%; border-radius:2px; background:var(--primary); }
+.wkp-fill.done { background:var(--success); }
+
+.upcoming-item {
+  background:var(--surface2); border-radius:var(--r-md);
+  border-left:3px solid var(--upc-c,var(--primary));
+  padding:12px 14px; margin-bottom:9px;
+}
+.upc-type { font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--upc-c,var(--primary)); margin-bottom:3px; }
+.upc-title { font-size:12.5px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.upc-date { font-family:var(--ff-mono); font-size:10.5px; color:var(--muted); display:flex; align-items:center; gap:5px; }
+
+/* ════════════════════════════════════════════
+   PAGE 4 — Q&A
+════════════════════════════════════════════ */
+.qa-layout { display:grid; grid-template-columns:1fr 290px; min-height:calc(100vh - 58px); }
+.qa-main { padding:28px 34px; background:var(--bg); }
+.qa-right { background:var(--surface); padding:22px 18px; border-left:1px solid var(--line); }
+
+.compose-box {
+  background:var(--surface); border:1.5px solid var(--line); border-radius:var(--r-lg);
+  padding:18px 20px; margin-bottom:22px; box-shadow:var(--shadow-sm);
+}
+.compose-lbl { font-size:12px; font-weight:600; color:var(--muted); margin-bottom:9px; }
+.qa-textarea {
+  width:100%; background:var(--surface2);
+  border:1.5px solid var(--line); border-radius:var(--r-xs);
+  padding:10px 13px; font-family:var(--ff-body); font-size:13.5px;
+  color:var(--ink); resize:none; outline:none; min-height:72px;
+  transition:border-color 0.16s; margin-bottom:9px;
+}
+.qa-textarea:focus { border-color:var(--primary); background:var(--surface); }
+.compose-footer { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+.select-tag {
+  padding:6px 11px; border-radius:var(--r-xs);
+  border:1.5px solid var(--line); background:var(--surface2);
+  font-family:var(--ff-body); font-size:12px; color:var(--muted); outline:none;
+  transition:border-color 0.15s;
+}
+.select-tag:focus { border-color:var(--primary); }
+
+.qa-filter-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:18px; }
+.qf-chip {
+  padding:5px 12px; border-radius:20px;
+  border:1.5px solid var(--line);
+  font-size:12px; font-weight:500; color:var(--muted);
+  cursor:pointer; transition:all 0.15s; background:var(--surface);
+}
+.qf-chip:hover { color:var(--ink); border-color:var(--line2); }
+.qf-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
+
+.qa-thread {
+  background:var(--surface); border:1.5px solid var(--line); border-radius:var(--r-lg);
+  margin-bottom:12px; transition:all 0.2s; overflow:hidden; box-shadow:var(--shadow-sm);
+}
+.qa-thread:hover { border-color:var(--primary); box-shadow:var(--shadow-md); }
+
+.thread-body { padding:18px 20px; cursor:pointer; }
+.th-header { display:flex; align-items:flex-start; gap:11px; margin-bottom:10px; }
+.th-avatar { width:32px; height:32px; border-radius:50%; display:grid; place-items:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
+.th-user { font-size:13px; font-weight:600; color:var(--ink); }
+.th-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+.thread-badge { margin-left:auto; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; flex-shrink:0; }
+.tb-ans  { background:var(--success-lt); color:var(--success); }
+.tb-open { background:var(--warning-lt); color:var(--warning); }
+.tb-pin  { background:var(--primary-lt); color:var(--primary); }
+
+.th-title { font-family:var(--ff-display); font-size:15px; font-weight:500; margin-bottom:7px; line-height:1.35; color:var(--ink); }
+.th-preview { font-size:13px; color:var(--muted); line-height:1.6; }
+.th-footer { display:flex; align-items:center; gap:14px; margin-top:13px; padding-top:13px; border-top:1px solid var(--line); }
+.th-stat { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); }
+.th-tag { margin-left:auto; padding:2px 8px; border-radius:3px; background:var(--surface2); font-size:10px; font-weight:600; color:var(--muted); letter-spacing:0.04em; text-transform:uppercase; }
+
+/* ════════════════════════════════════════════
+   PAGE 5 — PROFILE
+════════════════════════════════════════════ */
+.profile-layout { display:grid; grid-template-columns:260px 1fr; min-height:calc(100vh - 58px); }
+.profile-left {
+  background: linear-gradient(175deg, #1A1D2E 0%, #2A2F52 100%);
+  padding:32px 20px; display:flex; flex-direction:column;
+}
+.p-avatar {
+  width:72px; height:72px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),#7B68EE);
+  display:grid; place-items:center;
+  font-family:var(--ff-display); font-size:26px; font-weight:700; font-style:italic; color:white;
+  margin-bottom:14px; box-shadow:0 4px 16px rgba(61,82,213,0.4);
+}
+.p-name { font-family:var(--ff-display); font-size:18px; font-weight:400; font-style:italic; color:rgba(240,242,255,0.9); margin-bottom:3px; }
+.p-email { font-size:11px; color:rgba(255,255,255,0.3); margin-bottom:24px; }
+.p-stats { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:24px; }
+.p-stat-box { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:11px; text-align:center; }
+.psb-num { font-family:var(--ff-display); font-size:20px; font-weight:700; color:rgba(240,242,255,0.9); }
+.psb-lbl { font-size:9px; color:rgba(255,255,255,0.28); margin-top:2px; letter-spacing:0.07em; text-transform:uppercase; }
+.p-nav { display:flex; flex-direction:column; gap:2px; margin-top:auto; }
+.pn-item { display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:8px; font-size:12.5px; color:rgba(255,255,255,0.45); cursor:pointer; transition:all 0.15s; }
+.pn-item:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.8); }
+.pn-item.active { background:rgba(61,82,213,0.2); color:rgba(240,242,255,0.95); }
+.pn-icon { width:18px; text-align:center; }
+
+.profile-main { padding:32px 36px; background:var(--bg); overflow-y:auto; }
+
+.cert-banner {
+  background:linear-gradient(135deg,#1A1D2E,#2A2F52);
+  border-radius:var(--r-xl); padding:24px 28px;
+  display:flex; gap:20px; align-items:center; margin-bottom:24px;
+  position:relative; overflow:hidden;
+}
+.cert-banner::before { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(123,159,255,0.15),transparent 70%); }
+.cb-icon { font-size:44px; flex-shrink:0; }
+.cb-title { font-family:var(--ff-display); font-size:18px; font-weight:400; font-style:italic; color:rgba(240,242,255,0.9); margin-bottom:5px; }
+.cb-sub { font-size:12.5px; color:rgba(255,255,255,0.38); margin-bottom:14px; line-height:1.6; }
+.cb-bar-wrap { background:rgba(255,255,255,0.08); border-radius:4px; height:5px; overflow:hidden; margin-bottom:6px; }
+.cb-bar-fill { height:100%; background:linear-gradient(90deg,#3D52D5,#7B9FFF); border-radius:4px; width:63%; }
+.cb-bar-lbl { font-size:10.5px; color:rgba(255,255,255,0.3); }
+
+.enrolled-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.enr-card {
+  background:var(--surface); border:1.5px solid var(--line); border-radius:var(--r-lg);
+  padding:18px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.enr-card:hover { border-color:var(--primary-lt); box-shadow:var(--shadow-md); transform:translateY(-2px); }
+.enr-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--ec,var(--primary)); }
+.enr-dept { font-size:9.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--ec,var(--primary)); margin-bottom:5px; }
+.enr-title { font-family:var(--ff-display); font-size:14.5px; font-weight:500; font-style:italic; line-height:1.35; margin-bottom:12px; color:var(--ink); }
+.enr-prow { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.enr-pct-lbl { font-size:12px; font-weight:600; color:var(--ink); }
+.enr-wk { font-family:var(--ff-mono); font-size:10.5px; color:var(--muted); }
+.enr-bar { height:3px; background:var(--surface2); border-radius:2px; overflow:hidden; }
+.enr-fill { height:100%; border-radius:2px; background:var(--ec,var(--primary)); }
+.enr-next { font-size:11px; color:var(--muted); margin-top:8px; }
+
+/* ════════════════════════════════════════════
+   SHARED UTILS
+════════════════════════════════════════════ */
+.btn-sm {
+  padding:7px 16px; border-radius:var(--r-xs);
+  font-size:12.5px; font-weight:600; transition:all 0.16s;
+}
+.btn-sm-primary { background:var(--primary); color:white; box-shadow:0 2px 8px rgba(61,82,213,0.25); }
+.btn-sm-primary:hover { background:var(--primary-dk); }
+.btn-sm-ghost { background:var(--surface2); color:var(--muted); border:1.5px solid var(--line); }
+.btn-sm-ghost:hover { color:var(--ink); border-color:var(--line2); }
+.section-hr { height:1px; background:var(--line); margin:0 52px; }
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-thumb { background:var(--line2); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ TOPBAR ════════════════ -->
+<header class="topbar">
+  <div class="topbar-logo" onclick="goPage('home')">
+    <div class="logo-sq">S</div>
+    <span class="logo-wordmark">Swayam <em>·</em> NPTEL</span>
+  </div>
+  <nav class="topbar-nav">
+    <button class="active" onclick="goPage('home');setNav(this)">Catalog</button>
+    <button onclick="goPage('course');setNav(this)">My Course</button>
+    <button onclick="goPage('progress');setNav(this)">Progress</button>
+    <button onclick="goPage('qa');setNav(this)">Q&amp;A</button>
+    <button onclick="goPage('profile');setNav(this)">Profile</button>
+  </nav>
+  <div class="topbar-actions">
+    <div class="icon-btn"><i data-lucide="search" width="16" height="16"></i></div>
+    <div class="icon-btn"><i data-lucide="bell" width="16" height="16"></i></div>
+    <div class="avatar-btn">AK</div>
+  </div>
+</header>
+
+<!-- ════════════════ PAGE 1: CATALOG ════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section class="home-hero">
+    <div class="hero-eyebrow"><span class="blink"></span> Spring 2026 · Enrollment Open</div>
+    <h1 class="hero-title">Learn from India's<br><strong>finest universities,</strong><br>free of charge.</h1>
+    <p class="hero-sub">NPTEL offers thousands of verified online courses from IITs and IISc. Earn certificates, learn at your pace.</p>
+    <div class="hero-cta-row">
+      <button class="btn-primary" onclick="goPage('course');setNavI(1)">Continue Learning →</button>
+      <button class="btn-ghost">Browse All Courses</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">8,200+</div><div class="hero-stat-label">Courses Available</div></div>
+      <div><div class="hero-stat-num">4.2M</div><div class="hero-stat-label">Active Learners</div></div>
+      <div><div class="hero-stat-num">120+</div><div class="hero-stat-label">Partner Institutes</div></div>
+      <div><div class="hero-stat-num">98%</div><div class="hero-stat-label">Satisfaction</div></div>
+    </div>
+  </section>
+
+  <!-- Discipline Filter -->
+  <div class="filter-bar">
+    <span class="filter-label">Discipline</span>
+
+    <button class="disc-chip active" data-disc="all" onclick="setDisc(this)">
+      <i data-lucide="layout-grid" class="chip-icon" width="13" height="13"></i> All
+    </button>
+    <button class="disc-chip" data-disc="cs" onclick="setDisc(this)">
+      <i data-lucide="cpu" class="chip-icon" width="13" height="13"></i> Computer Science
+    </button>
+    <button class="disc-chip" data-disc="math" onclick="setDisc(this)">
+      <i data-lucide="infinity" class="chip-icon" width="13" height="13"></i> Mathematics
+    </button>
+    <button class="disc-chip" data-disc="ee" onclick="setDisc(this)">
+      <i data-lucide="zap" class="chip-icon" width="13" height="13"></i> Electrical Engg.
+    </button>
+    <button class="disc-chip" data-disc="mgmt" onclick="setDisc(this)">
+      <i data-lucide="briefcase" class="chip-icon" width="13" height="13"></i> Management
+    </button>
+    <button class="disc-chip" data-disc="phys" onclick="setDisc(this)">
+      <i data-lucide="atom" class="chip-icon" width="13" height="13"></i> Physics
+    </button>
+    <button class="disc-chip" data-disc="chem" onclick="setDisc(this)">
+      <i data-lucide="flask-conical" class="chip-icon" width="13" height="13"></i> Chemistry
+    </button>
+    <button class="disc-chip" data-disc="civil" onclick="setDisc(this)">
+      <i data-lucide="building-2" class="chip-icon" width="13" height="13"></i> Civil Engg.
+    </button>
+    <button class="disc-chip" data-disc="bio" onclick="setDisc(this)">
+      <i data-lucide="dna" class="chip-icon" width="13" height="13"></i> Biology
+    </button>
+  </div>
+
+  <!-- Enrolled Courses -->
+  <section class="catalog-section">
+    <div class="catalog-section-header">
+      <span class="catalog-section-title">Continue where you left off</span>
+      <span class="catalog-count">3 enrolled</span>
+      <a class="see-all" href="#">See all →</a>
+    </div>
+    <div class="course-grid">
+
+      <!-- Card 1 -->
+      <div class="course-card" onclick="goPage('course');setNavI(1)">
+        <div class="course-thumb ct-cs">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="cpu" width="22" height="22"></i></div>
+          <div class="thumb-week-badge">Wk 8 / 12</div>
+          <div class="thumb-inst-badge">IIT Madras</div>
+          <div class="thumb-progress"><div class="thumb-progress-fill" style="width:63%"></div></div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--cs-c)">
+            <i data-lucide="cpu" width="11" height="11"></i> Computer Science
+          </div>
+          <div class="cc-title">Introduction to Machine Learning</div>
+          <div class="cc-meta">
+            <span>Prof. B. Ravindran</span><span class="sep">·</span><span>12 weeks</span><span class="sep">·</span><span style="color:var(--success);font-weight:600">63% done</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--cs-c),var(--primary-dk))">BR</div>
+              <div class="inst-name">IIT Madras</div>
+            </div>
+            <div class="cc-action"><i data-lucide="arrow-right" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="course-card">
+        <div class="course-thumb ct-math">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="infinity" width="22" height="22"></i></div>
+          <div class="thumb-week-badge">Wk 4 / 8</div>
+          <div class="thumb-inst-badge">IIT Bombay</div>
+          <div class="thumb-progress"><div class="thumb-progress-fill" style="width:45%"></div></div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--math-c)">
+            <i data-lucide="infinity" width="11" height="11"></i> Mathematics
+          </div>
+          <div class="cc-title">Linear Algebra &amp; Its Applications</div>
+          <div class="cc-meta">
+            <span>Prof. S. Sharma</span><span class="sep">·</span><span>8 weeks</span><span class="sep">·</span><span style="color:var(--warning);font-weight:600">45% done</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--math-c),#056b52)">SS</div>
+              <div class="inst-name">IIT Bombay</div>
+            </div>
+            <div class="cc-action"><i data-lucide="arrow-right" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="course-card">
+        <div class="course-thumb ct-ee">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="zap" width="22" height="22"></i></div>
+          <div class="thumb-week-badge">Wk 2 / 10</div>
+          <div class="thumb-inst-badge">IIT Delhi</div>
+          <div class="thumb-progress"><div class="thumb-progress-fill" style="width:18%"></div></div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--ee-c)">
+            <i data-lucide="zap" width="11" height="11"></i> Electrical Engineering
+          </div>
+          <div class="cc-title">Digital Signal Processing</div>
+          <div class="cc-meta">
+            <span>Prof. R. Nair</span><span class="sep">·</span><span>10 weeks</span><span class="sep">·</span><span style="font-weight:600;color:var(--muted)">18% done</span>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--ee-c),#92470a)">RN</div>
+              <div class="inst-name">IIT Delhi</div>
+            </div>
+            <div class="cc-action"><i data-lucide="arrow-right" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-hr"></div>
+
+  <!-- Recommended -->
+  <section class="catalog-section">
+    <div class="catalog-section-header">
+      <span class="catalog-section-title">Recommended for you</span>
+      <span class="catalog-count">Based on your interests</span>
+      <a class="see-all" href="#">Browse all →</a>
+    </div>
+    <div class="course-grid">
+
+      <div class="course-card">
+        <div class="course-thumb ct-cs">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="brain" width="22" height="22"></i></div>
+          <div class="thumb-inst-badge">IIT KGP</div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--cs-c)"><i data-lucide="cpu" width="11" height="11"></i> Computer Science</div>
+          <div class="cc-title">Deep Learning — Foundations &amp; Applications</div>
+          <div class="cc-meta"><span>Prof. P. Das</span><span class="sep">·</span><span>12 weeks</span><span class="sep">·</span><span>★ 4.8</span></div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,#1a3a5c,#0a1e33)">PD</div>
+              <div class="inst-name">IIT Kharagpur</div>
+            </div>
+            <div class="cc-action"><i data-lucide="plus" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb ct-mgmt">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="briefcase" width="22" height="22"></i></div>
+          <div class="thumb-inst-badge">IIM Ahmedabad</div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--mgmt-c)"><i data-lucide="briefcase" width="11" height="11"></i> Management</div>
+          <div class="cc-title">Business Analytics for Decision Making</div>
+          <div class="cc-meta"><span>Prof. M. Joshi</span><span class="sep">·</span><span>8 weeks</span><span class="sep">·</span><span>★ 4.7</span></div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--mgmt-c),#5b1d9e)">MJ</div>
+              <div class="inst-name">IIM Ahmedabad</div>
+            </div>
+            <div class="cc-action"><i data-lucide="plus" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb ct-phys">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="atom" width="22" height="22"></i></div>
+          <div class="thumb-inst-badge">IISc Bangalore</div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--phys-c)"><i data-lucide="atom" width="11" height="11"></i> Physics</div>
+          <div class="cc-title">Quantum Mechanics — An Introduction</div>
+          <div class="cc-meta"><span>Prof. V. Singh</span><span class="sep">·</span><span>10 weeks</span><span class="sep">·</span><span>★ 4.9</span></div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--phys-c),#024f7a)">VS</div>
+              <div class="inst-name">IISc Bangalore</div>
+            </div>
+            <div class="cc-action"><i data-lucide="plus" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-thumb ct-chem">
+          <div class="ct-dots"></div>
+          <div class="ct-icon"><i data-lucide="flask-conical" width="22" height="22"></i></div>
+          <div class="thumb-inst-badge">IIT Roorkee</div>
+        </div>
+        <div class="course-card-body">
+          <div class="cc-dept" style="color:var(--chem-c)"><i data-lucide="flask-conical" width="11" height="11"></i> Chemistry</div>
+          <div class="cc-title">Organic Chemistry: Mechanisms &amp; Reactions</div>
+          <div class="cc-meta"><span>Prof. A. Gupta</span><span class="sep">·</span><span>8 weeks</span><span class="sep">·</span><span>★ 4.6</span></div>
+          <div class="cc-footer">
+            <div class="cc-inst">
+              <div class="inst-dot" style="background:linear-gradient(135deg,var(--chem-c),#8b0e0e)">AG</div>
+              <div class="inst-name">IIT Roorkee</div>
+            </div>
+            <div class="cc-action"><i data-lucide="plus" width="13" height="13"></i></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════ PAGE 2: COURSE PLAYER ════════════════ -->
+<div id="page-course" class="page">
+  <div class="course-layout">
+
+    <!-- Sidebar -->
+    <aside class="course-sidebar">
+      <div class="cs-header">
+        <div class="cs-dept">CS · IIT Madras</div>
+        <div class="cs-title">Introduction to Machine Learning</div>
+        <div class="cs-prog-label"><span>Progress</span><strong>63%</strong></div>
+        <div class="cs-prog-track"><div class="cs-prog-fill" style="width:63%"></div></div>
+      </div>
+      <div class="cs-outline">
+        <div class="ow-group">
+          <div class="ow-header" onclick="toggleOw(this)">
+            <span class="ow-num">WK 0</span><span class="ow-title">Course Overview</span><span class="ow-arr">›</span>
+          </div>
+        </div>
+        <div class="ow-group">
+          <div class="ow-header open" onclick="toggleOw(this)">
+            <span class="ow-num">WK 1</span><span class="ow-title">Foundations of ML</span><span class="ow-arr">›</span>
+          </div>
+          <div class="ow-lessons open">
+            <div class="ow-lesson done"><span class="ol-ic">✓</span><div><div class="ol-txt">Introduction to ML</div><div class="ol-dur">42:18</div></div></div>
+            <div class="ow-lesson done"><span class="ol-ic">✓</span><div><div class="ol-txt">Supervised Learning</div><div class="ol-dur">38:45</div></div></div>
+            <div class="ow-lesson done"><span class="ol-ic">✓</span><div><div class="ol-txt">Unsupervised Learning</div><div class="ol-dur">35:22</div></div></div>
+            <div class="ow-lesson done"><span class="ol-ic">✓</span><div><div class="ol-txt">Reinforcement Learning</div><div class="ol-dur">40:11</div></div></div>
+            <div class="ow-lesson done"><span class="ol-ic">✓</span><div><div class="ol-txt">Quiz · Assignment 1</div><div class="ol-dur">87%</div></div></div>
+          </div>
+        </div>
+        <div class="ow-group">
+          <div class="ow-header active open" onclick="toggleOw(this)">
+            <span class="ow-num">WK 8</span><span class="ow-title">Neural Networks</span><span class="ow-arr">›</span>
+          </div>
+          <div class="ow-lessons open">
+            <div class="ow-lesson current"><span class="ol-ic">▶</span><div><div class="ol-txt">Backpropagation Algorithm</div><div class="ol-dur">51:04</div></div></div>
+            <div class="ow-lesson"><span class="ol-ic">○</span><div><div class="ol-txt">Activation Functions</div><div class="ol-dur">38:17</div></div></div>
+            <div class="ow-lesson"><span class="ol-ic">○</span><div><div class="ol-txt">Regularisation &amp; Dropout</div><div class="ol-dur">44:30</div></div></div>
+            <div class="ow-lesson"><span class="ol-ic">○</span><div><div class="ol-txt">Optimisation Strategies</div><div class="ol-dur">46:55</div></div></div>
+            <div class="ow-lesson"><span class="ol-ic">📝</span><div><div class="ol-txt">Assignment 8</div><div class="ol-dur">Not released</div></div></div>
+          </div>
+        </div>
+        <div class="ow-group"><div class="ow-header" onclick="toggleOw(this)"><span class="ow-num">WK 9</span><span class="ow-title">Convolutional Networks</span><span class="ow-arr">›</span></div></div>
+        <div class="ow-group"><div class="ow-header" onclick="toggleOw(this)"><span class="ow-num">WK 10</span><span class="ow-title">Recurrent Networks</span><span class="ow-arr">›</span></div></div>
+        <div class="ow-group"><div class="ow-header" onclick="toggleOw(this)"><span class="ow-num">WK 11</span><span class="ow-title">Attention &amp; Transformers</span><span class="ow-arr">›</span></div></div>
+        <div class="ow-group"><div class="ow-header" onclick="toggleOw(this)"><span class="ow-num">WK 12</span><span class="ow-title">Final Projects</span><span class="ow-arr">›</span></div></div>
+      </div>
+    </aside>
+
+    <!-- Player + content -->
+    <div class="course-main">
+      <div class="vp-wrap">
+        <div class="vp-stage">
+          <div class="vp-grid"></div>
+          <div class="vp-glow"></div>
+          <div class="vp-play-btn"><i data-lucide="play" width="24" height="24" color="white" style="margin-left:3px"></i></div>
+          <div class="vp-info">
+            <div class="vp-wk">Week 8 · Lecture 1</div>
+            <div class="vp-lt">Backpropagation Algorithm</div>
+          </div>
+          <div class="vp-bar">
+            <span class="vp-ic"><i data-lucide="skip-back" width="14" height="14"></i></span>
+            <div class="vp-timeline"><div class="vp-tl-fill"></div></div>
+            <span class="vp-time">17:54 / 51:04</span>
+            <span class="vp-ic"><i data-lucide="skip-forward" width="14" height="14"></i></span>
+            <span class="vp-ic"><i data-lucide="maximize-2" width="14" height="14"></i></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-tabs">
+        <div class="ct-tab active" onclick="switchCTab(this,'tp-overview')">Overview</div>
+        <div class="ct-tab" onclick="switchCTab(this,'tp-resources')">Resources</div>
+        <div class="ct-tab" onclick="switchCTab(this,'tp-notes')">My Notes</div>
+        <div class="ct-tab" onclick="switchCTab(this,'tp-transcript')">Transcript</div>
+      </div>
+
+      <div id="tp-overview" class="tab-panel active">
+        <div class="lesson-meta-row">
+          <span class="lm-chip lm-week">Week 8</span>
+          <span class="lm-chip lm-dur">51:04</span>
+        </div>
+        <div class="lesson-title-big">Backpropagation Algorithm</div>
+        <div class="lesson-nav-row">
+          <button class="btn-nav btn-nav-prev">← Previous</button>
+          <button class="btn-nav btn-nav-next">Next Lesson →</button>
+        </div>
+        <p class="lesson-desc" style="margin-top:20px;">We derive the backpropagation algorithm from first principles using the chain rule of calculus. We trace how gradients flow backwards through a multi-layer network, and connect the mathematics to efficient vectorised computation.</p>
+        <div class="kc-block">
+          <div class="kc-label">Key Concepts</div>
+          <div class="concept-tags">
+            <span class="concept-tag">Chain Rule</span>
+            <span class="concept-tag">Computational Graph</span>
+            <span class="concept-tag">Gradient Flow</span>
+            <span class="concept-tag">Vanishing Gradients</span>
+            <span class="concept-tag">Weight Update</span>
+            <span class="concept-tag">Forward Pass</span>
+            <span class="concept-tag">Jacobian Matrix</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="tp-resources" class="tab-panel">
+        <div class="resources-grid">
+          <div class="res-card"><div class="res-icon ri-pdf"><i data-lucide="file-text" width="18" height="18"></i></div><div><div class="res-title">Week 8 Lecture Slides</div><div class="res-meta">PDF · 2.4 MB · 32 slides</div></div></div>
+          <div class="res-card"><div class="res-icon ri-code"><i data-lucide="code-2" width="18" height="18"></i></div><div><div class="res-title">Backprop NumPy Notebook</div><div class="res-meta">Jupyter · .ipynb · 450 KB</div></div></div>
+          <div class="res-card"><div class="res-icon ri-quiz"><i data-lucide="clipboard-list" width="18" height="18"></i></div><div><div class="res-title">Assignment 8 (Coming Soon)</div><div class="res-meta">Quiz · Releases Mar 13</div></div></div>
+          <div class="res-card"><div class="res-icon ri-vid"><i data-lucide="play-circle" width="18" height="18"></i></div><div><div class="res-title">Supplementary: Matrix Calc Review</div><div class="res-meta">Video · 22 min</div></div></div>
+        </div>
+      </div>
+
+      <div id="tp-notes" class="tab-panel">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;">Notes for this lecture — saved automatically</div>
+        <textarea class="qa-textarea" style="min-height:200px;" placeholder="Type your notes here…"></textarea>
+      </div>
+
+      <div id="tp-transcript" class="tab-panel">
+        <p style="font-size:13.5px;line-height:1.85;color:var(--muted);max-width:680px;">
+          <span style="font-family:var(--ff-mono);font-size:10px;color:var(--primary);margin-right:8px;">00:00</span>So we're going to begin today's lecture on the backpropagation algorithm. This is one of the most important algorithms in all of machine learning…<br><br>
+          <span style="font-family:var(--ff-mono);font-size:10px;color:var(--primary);margin-right:8px;">00:32</span>The key insight is that we can use the chain rule of calculus to propagate gradient signals backwards through a network efficiently using matrix operations…<br><br>
+          <span style="font-family:var(--ff-mono);font-size:10px;color:var(--primary);margin-right:8px;">01:15</span>Let me first draw a simple computational graph. We have input x, then weights W₁, activation function σ, then W₂, and finally a loss function ℒ…
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 3: PROGRESS ════════════════ -->
+<div id="page-progress" class="page">
+  <div class="progress-layout">
+    <div class="progress-main">
+      <div class="page-heading">Your Progress</div>
+      <div class="page-sub">Introduction to Machine Learning · Spring 2026</div>
+
+      <div class="score-grid">
+        <div class="score-card" style="--sc:var(--success)">
+          <div class="sc-num">87<span class="sc-unit">%</span></div>
+          <div class="sc-label">Average Assignment Score</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:87%"></div></div>
+        </div>
+        <div class="score-card" style="--sc:var(--primary)">
+          <div class="sc-num">63<span class="sc-unit">%</span></div>
+          <div class="sc-label">Course Completion</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:63%"></div></div>
+        </div>
+        <div class="score-card" style="--sc:var(--info)">
+          <div class="sc-num">7<span class="sc-unit">/7</span></div>
+          <div class="sc-label">Assignments Submitted</div>
+          <div class="sc-bar"><div class="sc-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <div class="asgn-table">
+        <div class="asgn-thead"><span>Assignment</span><span>Week</span><span>Score</span><span>Status</span><span>Action</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 1 — Foundations of ML</span><span class="ar-week">Week 1</span><span class="ar-score score-hi">92/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 2 — Regression Methods</span><span class="ar-week">Week 2</span><span class="ar-score score-hi">88/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 3 — Classification</span><span class="ar-week">Week 3</span><span class="ar-score score-md">79/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 4 — Decision Trees</span><span class="ar-week">Week 4</span><span class="ar-score score-hi">95/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 5 — SVM &amp; Kernels</span><span class="ar-week">Week 5</span><span class="ar-score score-md">83/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 6 — Clustering</span><span class="ar-week">Week 6</span><span class="ar-score score-hi">90/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 7 — Dimensionality Reduction</span><span class="ar-week">Week 7</span><span class="ar-score score-md">81/100</span><span class="badge badge-done">✓ Submitted</span><span class="ar-act">View</span></div>
+        <div class="asgn-row"><span class="ar-title">Assignment 8 — Neural Networks</span><span class="ar-week">Week 8</span><span class="ar-score score-na">—</span><span class="badge badge-pend">◌ Upcoming</span><span class="ar-act" style="color:var(--subtle)">Soon</span></div>
+      </div>
+    </div>
+
+    <div class="progress-right">
+      <div class="ps-title" style="margin-bottom:14px">Week-by-Week Progress</div>
+      <div class="wk-prog-list">
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 1</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 2</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 3</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 4</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 5</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 6</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 7</span><span class="wkp-pct">100%</span></div><div class="wkp-bar"><div class="wkp-fill done" style="width:100%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Week 8</span><span class="wkp-pct">25%</span></div><div class="wkp-bar"><div class="wkp-fill" style="width:25%"></div></div></div>
+        <div class="wk-prog-item"><div class="wkp-hd"><span class="wkp-name">Weeks 9–12</span><span class="wkp-pct">0%</span></div><div class="wkp-bar"><div class="wkp-fill" style="width:0%"></div></div></div>
+      </div>
+
+      <div class="ps-title">Upcoming Deadlines</div>
+      <div class="upcoming-item" style="--upc-c:var(--warning)">
+        <div class="upc-type">Assignment</div>
+        <div class="upc-title">Assignment 8 Release</div>
+        <div class="upc-date"><i data-lucide="calendar" width="11" height="11"></i> Est. 13 March 2026</div>
+      </div>
+      <div class="upcoming-item" style="--upc-c:var(--success)">
+        <div class="upc-type">Live Session</div>
+        <div class="upc-title">Problem Solving — Session III</div>
+        <div class="upc-date"><i data-lucide="video" width="11" height="11"></i> 15 March 2026 · 4 PM IST</div>
+      </div>
+      <div class="upcoming-item" style="--upc-c:var(--danger)">
+        <div class="upc-type">Final Exam</div>
+        <div class="upc-title">In-Person Proctored Exam</div>
+        <div class="upc-date"><i data-lucide="map-pin" width="11" height="11"></i> 30 April 2026 · Your City</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 4: Q&A ════════════════ -->
+<div id="page-qa" class="page">
+  <div class="qa-layout">
+    <div class="qa-main">
+      <div class="page-heading">Discussion Forum</div>
+      <div class="page-sub">Ask questions, share insights, help fellow learners</div>
+
+      <div class="compose-box">
+        <div class="compose-lbl">Start a discussion or ask a question</div>
+        <textarea class="qa-textarea" placeholder="e.g. In the backpropagation lecture (Week 8), I'm confused about why the gradient of the loss w.r.t W₁ requires the Jacobian. Can someone clarify?"></textarea>
+        <div class="compose-footer">
+          <select class="select-tag">
+            <option>Week 8 — Neural Networks</option>
+            <option>Week 1 — Foundations</option>
+            <option>Week 7 — Dim. Reduction</option>
+            <option>General</option>
+          </select>
+          <button class="btn-sm btn-sm-primary">Post Question</button>
+        </div>
+      </div>
+
+      <div class="qa-filter-row">
+        <button class="qf-chip active">All</button>
+        <button class="qf-chip" onclick="setQF(this)">Unanswered</button>
+        <button class="qf-chip" onclick="setQF(this)">Week 8</button>
+        <button class="qf-chip" onclick="setQF(this)">Staff Answered</button>
+        <button class="qf-chip" onclick="setQF(this)">My Questions</button>
+      </div>
+
+      <div class="qa-thread">
+        <div class="thread-body">
+          <div class="th-header">
+            <div class="th-avatar" style="background:linear-gradient(135deg,var(--success),#056b52)">RS</div>
+            <div><div class="th-user">Rohit Sharma</div><div class="th-meta">Week 8 · 2 hours ago · 14 upvotes</div></div>
+            <div class="thread-badge tb-ans">✓ Answered</div>
+          </div>
+          <div class="th-title">Why does vanishing gradient occur more in sigmoid vs ReLU?</div>
+          <div class="th-preview">I understand sigmoid squashes values to (0,1) but I can't intuitively see why gradients would be near zero for large activations. The derivative formula shows it clearly but the intuition isn't clicking…</div>
+          <div class="th-footer">
+            <div class="th-stat"><i data-lucide="arrow-up" width="12" height="12"></i> 14</div>
+            <div class="th-stat"><i data-lucide="message-circle" width="12" height="12"></i> 8 replies</div>
+            <div class="th-stat"><i data-lucide="eye" width="12" height="12"></i> 342 views</div>
+            <div class="th-tag">Week 8</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa-thread">
+        <div class="thread-body">
+          <div class="th-header">
+            <div class="th-avatar" style="background:linear-gradient(135deg,var(--ee-c),#92470a)">PM</div>
+            <div><div class="th-user">Priya Menon</div><div class="th-meta">Week 8 · 5 hours ago · 9 upvotes</div></div>
+            <div class="thread-badge tb-pin">📌 Pinned</div>
+          </div>
+          <div class="th-title">Assignment 8 — Expected release date?</div>
+          <div class="th-preview">The Week 8 content went live a few days ago. Has there been any update from the teaching team about when the corresponding assignment will be available? The announcement said "soon" but no specific date…</div>
+          <div class="th-footer">
+            <div class="th-stat"><i data-lucide="arrow-up" width="12" height="12"></i> 9</div>
+            <div class="th-stat"><i data-lucide="message-circle" width="12" height="12"></i> 3 replies</div>
+            <div class="th-stat"><i data-lucide="eye" width="12" height="12"></i> 218 views</div>
+            <div class="th-tag">Assignment</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa-thread">
+        <div class="thread-body">
+          <div class="th-header">
+            <div class="th-avatar" style="background:linear-gradient(135deg,var(--primary),var(--primary-dk))">AK</div>
+            <div><div class="th-user">Arjun Kumar <span style="color:var(--primary);font-size:10px;font-weight:700;margin-left:5px;background:var(--primary-lt);padding:1px 6px;border-radius:3px;">YOU</span></div><div class="th-meta">Week 7 · Yesterday · 5 upvotes</div></div>
+            <div class="thread-badge tb-open">? Open</div>
+          </div>
+          <div class="th-title">PCA vs t-SNE — when is one preferred over the other?</div>
+          <div class="th-preview">I've been reading that t-SNE preserves local structure while PCA preserves global variance. In practice, when should I choose t-SNE? Is it only for visualisation or can it be used for reduction before classification?</div>
+          <div class="th-footer">
+            <div class="th-stat"><i data-lucide="arrow-up" width="12" height="12"></i> 5</div>
+            <div class="th-stat"><i data-lucide="message-circle" width="12" height="12"></i> 2 replies</div>
+            <div class="th-stat"><i data-lucide="eye" width="12" height="12"></i> 97 views</div>
+            <div class="th-tag">Week 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-right">
+      <div class="ps-title" style="margin-bottom:12px">Forum Stats</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px;">
+        <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;border:1.5px solid var(--line)">
+          <div style="font-family:var(--ff-display);font-size:20px;font-weight:700;color:var(--ink)">248</div>
+          <div style="font-size:9.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">Questions</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;border:1.5px solid var(--line)">
+          <div style="font-family:var(--ff-display);font-size:20px;font-weight:700;color:var(--success)">91%</div>
+          <div style="font-size:9.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">Answered</div>
+        </div>
+      </div>
+
+      <div class="ps-title" style="margin-bottom:12px">Top Contributors</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div class="th-avatar" style="background:linear-gradient(135deg,var(--primary),var(--primary-dk));width:28px;height:28px;font-size:9px">TA</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--ink)">Teaching Assistant</div><div style="font-size:10.5px;color:var(--muted)">48 answers</div></div>
+          <div style="margin-left:auto;font-size:9px;background:var(--warning-lt);color:var(--warning);font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:0.05em">STAFF</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div class="th-avatar" style="background:linear-gradient(135deg,var(--success),#056b52);width:28px;height:28px;font-size:9px">RS</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--ink)">Rohit Sharma</div><div style="font-size:10.5px;color:var(--muted)">32 answers</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div class="th-avatar" style="background:linear-gradient(135deg,var(--phys-c),#024f7a);width:28px;height:28px;font-size:9px">NV</div>
+          <div><div style="font-size:12px;font-weight:500;color:var(--ink)">Nandini Varma</div><div style="font-size:10.5px;color:var(--muted)">27 answers</div></div>
+        </div>
+      </div>
+
+      <div class="ps-title" style="margin-bottom:10px">Browse by Week</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="qf-chip" style="font-size:11px;padding:4px 10px">Wk 1</span>
+        <span class="qf-chip" style="font-size:11px;padding:4px 10px">Wk 2</span>
+        <span class="qf-chip" style="font-size:11px;padding:4px 10px">Wk 7</span>
+        <span class="qf-chip active" style="font-size:11px;padding:4px 10px">Wk 8</span>
+        <span class="qf-chip" style="font-size:11px;padding:4px 10px">General</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE 5: PROFILE ════════════════ -->
+<div id="page-profile" class="page">
+  <div class="profile-layout">
+    <div class="profile-left">
+      <div class="p-avatar">A</div>
+      <div class="p-name">Anna Keerthana</div>
+      <div class="p-email">annakeerthanashaji@gmail.com</div>
+      <div class="p-stats">
+        <div class="p-stat-box"><div class="psb-num">3</div><div class="psb-lbl">Enrolled</div></div>
+        <div class="p-stat-box"><div class="psb-num">1</div><div class="psb-lbl">Completed</div></div>
+        <div class="p-stat-box"><div class="psb-num">87%</div><div class="psb-lbl">Avg Score</div></div>
+        <div class="p-stat-box"><div class="psb-num">142h</div><div class="psb-lbl">Watch Time</div></div>
+      </div>
+      <div class="p-nav">
+        <div class="pn-item active"><span class="pn-icon"><i data-lucide="layout-dashboard" width="14" height="14"></i></span> Dashboard</div>
+        <div class="pn-item"><span class="pn-icon"><i data-lucide="book-open" width="14" height="14"></i></span> My Courses</div>
+        <div class="pn-item"><span class="pn-icon"><i data-lucide="award" width="14" height="14"></i></span> Certificates</div>
+        <div class="pn-item"><span class="pn-icon"><i data-lucide="calendar-days" width="14" height="14"></i></span> Schedule</div>
+        <div class="pn-item"><span class="pn-icon"><i data-lucide="settings" width="14" height="14"></i></span> Settings</div>
+      </div>
+    </div>
+
+    <div class="profile-main">
+      <div class="page-heading">Welcome back, Anna.</div>
+      <div class="page-sub">Here's a summary of your learning activity.</div>
+
+      <div class="cert-banner">
+        <div class="cb-icon">🎓</div>
+        <div style="flex:1">
+          <div class="cb-title">Certificate Progress — Intro to ML</div>
+          <div class="cb-sub">Complete all 12 weeks and score 40%+ in the final exam to earn your verified NPTEL certificate.</div>
+          <div class="cb-bar-wrap"><div class="cb-bar-fill"></div></div>
+          <div class="cb-bar-lbl">63% complete · Estimated completion: April 15, 2026</div>
+        </div>
+        <div style="flex-shrink:0">
+          <button class="btn-sm btn-sm-primary" onclick="goPage('course');setNavI(1)">Continue →</button>
+        </div>
+      </div>
+
+      <div class="catalog-section-header" style="margin-bottom:16px">
+        <span class="catalog-section-title" style="font-size:19px">Enrolled Courses</span>
+      </div>
+      <div class="enrolled-grid">
+        <div class="enr-card" style="--ec:var(--cs-c)" onclick="goPage('course');setNavI(1)">
+          <div class="enr-dept"><i data-lucide="cpu" width="10" height="10"></i> Computer Science · IIT Madras</div>
+          <div class="enr-title">Introduction to Machine Learning</div>
+          <div class="enr-prow"><span class="enr-pct-lbl">63% complete</span><span class="enr-wk">Wk 8 / 12</span></div>
+          <div class="enr-bar"><div class="enr-fill" style="width:63%"></div></div>
+          <div class="enr-next">Next: Backpropagation Algorithm</div>
+        </div>
+        <div class="enr-card" style="--ec:var(--math-c)">
+          <div class="enr-dept"><i data-lucide="infinity" width="10" height="10"></i> Mathematics · IIT Bombay</div>
+          <div class="enr-title">Linear Algebra &amp; Its Applications</div>
+          <div class="enr-prow"><span class="enr-pct-lbl">45% complete</span><span class="enr-wk">Wk 4 / 8</span></div>
+          <div class="enr-bar"><div class="enr-fill" style="width:45%"></div></div>
+          <div class="enr-next">Next: Eigenvalues &amp; Eigenvectors</div>
+        </div>
+        <div class="enr-card" style="--ec:var(--ee-c)">
+          <div class="enr-dept"><i data-lucide="zap" width="10" height="10"></i> Electrical Engg. · IIT Delhi</div>
+          <div class="enr-title">Digital Signal Processing</div>
+          <div class="enr-prow"><span class="enr-pct-lbl">18% complete</span><span class="enr-wk">Wk 2 / 10</span></div>
+          <div class="enr-bar"><div class="enr-fill" style="width:18%"></div></div>
+          <div class="enr-next">Next: Z-Transform · Week 2</div>
+        </div>
+        <div class="enr-card" style="--ec:var(--primary);cursor:default;border-style:dashed;background:transparent;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;box-shadow:none">
+          <i data-lucide="plus-circle" width="28" height="28" color="var(--subtle)"></i>
+          <div style="font-size:12px;color:var(--muted)">Discover more courses</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Init Lucide icons
+lucide.createIcons();
+
+// Page navigation
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + id);
+  if (el) { el.classList.add('active'); el.style.animation='none'; el.offsetHeight; el.style.animation=''; }
+  lucide.createIcons();
+}
+function setNav(btn) {
+  document.querySelectorAll('.topbar-nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setNavI(i) {
+  const btns = document.querySelectorAll('.topbar-nav button');
+  btns.forEach(b => b.classList.remove('active'));
+  if (btns[i]) btns[i].classList.add('active');
+}
+
+// Discipline filter
+function setDisc(el) {
+  document.querySelectorAll('.disc-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Course sidebar toggle
+function toggleOw(hd) {
+  const lessons = hd.nextElementSibling;
+  const open = hd.classList.contains('open');
+  hd.classList.toggle('open', !open);
+  if (lessons?.classList.contains('ow-lessons')) lessons.classList.toggle('open', !open);
+}
+
+// Content tabs
+function switchCTab(tab, panelId) {
+  document.querySelectorAll('.ct-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById(panelId)?.classList.add('active');
+}
+
+// Q&A filter
+function setQF(el) {
+  document.querySelectorAll('.qa-filter-row .qf-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

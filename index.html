@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anna Keerthana Shaji — UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+<style>
+/* =========================================================
+   PORTFOLIO STYLES
+========================================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --cream: #F5F0E8;
+  --ink: #1A1614;
+  --rust: #C4573A;
+  --sand: #D9C9B0;
+  --muted: #7A6E65;
+  --white: #FDFCFA;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 3rem;
+  z-index: 500;
+  background: rgba(245,240,232,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(217,201,176,0.4);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a, .nav-links button {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links button:hover { color: var(--rust); }
+.nav-links .nav-cta {
+  background: var(--ink);
+  color: var(--cream) !important;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.72rem;
+}
+.nav-links .nav-cta:hover { background: var(--rust); color: var(--cream) !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 3rem;
+  padding-top: 6rem;
+  overflow: hidden;
+  position: relative;
+}
+.hero::after {
+  content: 'DESIGN';
+  position: absolute;
+  bottom: -2rem; right: -1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 16vw, 17rem);
+  font-weight: 900;
+  color: var(--sand);
+  opacity: 0.28;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 4rem;
+  animation: fadeUp 0.9s ease both;
+}
+.hero-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.hero-tag::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--rust); }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.6rem;
+}
+h1 em { font-style: italic; color: var(--rust); }
+.hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 38ch;
+  margin-bottom: 2.5rem;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-p {
+  background: var(--ink); color: var(--cream);
+  padding: 0.8rem 1.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: none; cursor: pointer; text-decoration: none; display: inline-block;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-p:hover { background: var(--rust); transform: translateY(-2px); }
+.btn-o {
+  background: transparent; color: var(--ink);
+  padding: 0.8rem 1.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1.5px solid var(--ink); cursor: pointer; text-decoration: none; display: inline-block;
+  transition: all 0.2s;
+}
+.btn-o:hover { border-color: var(--rust); color: var(--rust); }
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: fadeUp 1.1s ease both;
+}
+.hero-visual {
+  width: 400px; height: 500px;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+.hero-visual-inner {
+  position: absolute; inset: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; padding: 2rem; gap: 1rem;
+}
+.mock-bar { height: 6px; background: rgba(255,255,255,0.12); border-radius: 2px; }
+.mock-bar.accent { background: var(--rust); width: 40%; }
+.mock-bar.short { width: 60%; }
+.mock-bar.medium { width: 80%; }
+.mock-card {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-top: 0.5rem;
+  display: flex; align-items: flex-end; padding: 1.2rem;
+  position: relative; overflow: hidden;
+}
+.mock-card::before {
+  content: '';
+  position: absolute; top: 1rem; left: 1rem; right: 1rem; height: 4rem;
+  background: linear-gradient(135deg, rgba(196,87,58,0.3), rgba(196,87,58,0.05));
+}
+.mock-card-text { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: rgba(255,255,255,0.5); font-style: italic; line-height: 1.4; }
+.hero-stat-card {
+  position: absolute; bottom: -1rem; left: -2rem;
+  background: var(--white); padding: 1.2rem 1.8rem;
+  border-left: 3px solid var(--rust);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1; color: var(--rust); }
+.stat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+/* MARQUEE */
+.marquee-wrapper { background: var(--ink); padding: 0.9rem 0; overflow: hidden; }
+.marquee-track { display: flex; gap: 2.5rem; animation: marquee 18s linear infinite; white-space: nowrap; }
+.marquee-item { font-family: 'Playfair Display', serif; font-size: 0.82rem; font-style: italic; color: var(--sand); letter-spacing: 0.04em; display: flex; align-items: center; gap: 1.2rem; flex-shrink: 0; }
+.marquee-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--rust); display: inline-block; }
+
+/* SECTION SHARED */
+.section { padding: 6rem 3rem; }
+.section-label {
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust);
+  margin-bottom: 3rem; display: flex; align-items: center; gap: 0.8rem;
+}
+.section-label::after { content: ''; flex: 1; max-width: 3rem; height: 1px; background: var(--rust); }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+.about-heading { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.4rem; }
+.about-heading em { font-style: italic; color: var(--rust); }
+.about-text { font-size: 0.93rem; line-height: 1.85; color: var(--muted); margin-bottom: 1.1rem; }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.skill-pill { padding: 0.65rem 1.1rem; border: 1px solid var(--sand); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; }
+.skill-pill:hover { border-color: var(--rust); color: var(--rust); background: rgba(196,87,58,0.04); }
+
+/* CASE STUDY SECTION */
+.work-section { padding: 4rem 3rem 7rem; background: var(--white); }
+.work-heading { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 900; margin-bottom: 3rem; line-height: 1; }
+.work-heading em { font-style: italic; color: var(--rust); }
+
+/* THE CASE STUDY CARD */
+.case-card {
+  border: 1px solid var(--sand);
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+.case-card-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+
+/* BROWSER EMBED */
+.browser-wrap {
+  background: #1A1D2E;
+  display: flex; flex-direction: column;
+}
+.browser-chrome {
+  background: #2A2D3E; padding: 0.55rem 1rem;
+  display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;
+}
+.b-dots { display: flex; gap: 5px; }
+.b-dots span { width: 9px; height: 9px; border-radius: 50%; }
+.b-dots .d1 { background: #FF5F57; }
+.b-dots .d2 { background: #FFBD2E; }
+.b-dots .d3 { background: #28C840; }
+.b-url {
+  flex: 1; background: #1A1D2E; border-radius: 3px;
+  padding: 0.2rem 0.7rem; font-size: 0.68rem; color: rgba(255,255,255,0.3);
+  font-family: monospace; letter-spacing: 0.02em;
+}
+.b-open {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5); font-size: 0.62rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 2px;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+}
+.b-open:hover { background: rgba(255,255,255,0.12); color: white; }
+.b-live {
+  position: relative;
+  flex: 1; overflow: hidden; min-height: 460px;
+}
+.b-live-badge {
+  position: absolute; top: 0.6rem; right: 0.6rem;
+  background: var(--rust); color: white;
+  font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.18rem 0.45rem; border-radius: 2px; z-index: 10; pointer-events: none;
+}
+.proto-iframe {
+  width: 100%; height: 100%; border: none; min-height: 460px;
+}
+.case-content {
+  padding: 3rem 3.5rem;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--white);
+}
+.case-number { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--sand); line-height: 1; margin-bottom: 0.4rem; }
+.case-type { font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.8rem; }
+.case-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.9rem; }
+.case-desc { font-size: 0.88rem; line-height: 1.78; color: var(--muted); margin-bottom: 1.5rem; }
+.case-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.tag { font-size: 0.68rem; letter-spacing: 0.06em; padding: 0.25rem 0.7rem; border: 1px solid var(--sand); color: var(--muted); text-transform: uppercase; }
+
+/* OUTCOME METRICS */
+.outcome-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--sand); margin-bottom: 1.8rem; }
+.outcome-item { padding: 1rem; border-right: 1px solid var(--sand); text-align: center; }
+.outcome-item:last-child { border-right: none; }
+.out-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--rust); line-height: 1; }
+.out-label { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+.case-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none; font-weight: 500;
+  border-bottom: 1px solid var(--ink); padding-bottom: 2px; width: fit-content;
+  transition: color 0.2s, border-color 0.2s;
+}
+.case-link:hover { color: var(--rust); border-color: var(--rust); }
+
+/* PROCESS SECTION */
+.process-section { padding: 6rem 3rem; }
+.process-grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--sand); margin-top: 3.5rem; }
+.process-step { padding: 2.2rem 1.8rem; border-right: 1px solid var(--sand); transition: background 0.2s; }
+.process-step:last-child { border-right: none; }
+.process-step:hover { background: var(--white); }
+.step-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--sand); line-height: 1; margin-bottom: 0.8rem; }
+.step-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.7rem; }
+.step-desc { font-size: 0.82rem; line-height: 1.7; color: var(--muted); }
+
+/* CONTACT */
+.contact-section {
+  background: var(--ink); padding: 8rem 3rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.contact-section::before {
+  content: 'HELLO';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: 'Playfair Display', serif; font-size: clamp(5rem, 18vw, 18rem);
+  font-weight: 900; color: rgba(255,255,255,0.03); pointer-events: none;
+  letter-spacing: -0.04em; white-space: nowrap;
+}
+.contact-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.8rem; }
+.contact-heading { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.5vw, 4rem); font-weight: 900; color: var(--cream); line-height: 1.1; margin-bottom: 1.2rem; }
+.contact-heading em { font-style: italic; color: var(--rust); }
+.contact-sub { font-size: 0.95rem; color: rgba(245,240,232,0.45); margin-bottom: 2.5rem; line-height: 1.7; }
+.contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.c-link { padding: 0.9rem 2.2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+.c-link.primary { background: var(--rust); color: white; }
+.c-link.primary:hover { background: #B04A30; }
+.c-link.ghost { border: 1px solid rgba(245,240,232,0.2); color: var(--cream); }
+.c-link.ghost:hover { border-color: var(--rust); color: var(--rust); }
+footer { background: #0F0D0C; padding: 1.8rem 3rem; display: flex; justify-content: space-between; align-items: center; color: rgba(245,240,232,0.25); font-size: 0.72rem; letter-spacing: 0.05em; }
+.footer-logo { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(245,240,232,0.35); }
+
+/* SWAYAM FULL PROTOTYPE PAGE */
+#sw-page {
+  position: fixed; inset: 0; z-index: 1000;
+  background: #F7F8FC;
+  display: none; flex-direction: column;
+}
+#sw-page.open { display: flex; }
+.sw-topbar {
+  background: var(--ink); padding: 0.7rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; z-index: 1001;
+}
+.sw-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--cream); font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.sw-back:hover { color: var(--rust); }
+.sw-back::before { content: '←'; font-size: 1rem; }
+.sw-title { font-family: 'Playfair Display', serif; font-size: 0.9rem; font-style: italic; color: rgba(245,240,232,0.6); }
+.sw-badge { background: var(--rust); color: white; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; }
+#sw-frame { flex: 1; border: none; width: 100%; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.fade-in { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  nav { padding: 1.1rem 1.5rem; }
+  .hero { grid-template-columns: 1fr; padding: 5.5rem 1.5rem 3rem; }
+  .hero::after { display: none; }
+  .hero-right { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .case-card-header { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .process-step { border-bottom: 1px solid var(--sand); }
+  .section, .work-section, .process-section { padding: 4rem 1.5rem; }
+  .contact-section { padding: 5rem 1.5rem; }
+  footer { padding: 1.5rem; }
+  .outcome-grid { grid-template-columns: 1fr; }
+  .outcome-item { border-right: none; border-bottom: 1px solid var(--sand); }
+  .outcome-item:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SWAYAM FULL PAGE OVERLAY -->
+<div id="sw-page">
+  <div class="sw-topbar">
+    <button class="sw-back" onclick="closeSw()"> Back to Portfolio</button>
+    <span class="sw-title">Swayam Portal — Redesign Prototype</span>
+    <span class="sw-badge">Live Prototype</span>
+  </div>
+  <iframe id="sw-frame" src="swayam-v2.html" title="Swayam Redesign Prototype"></iframe>
+</div>
+
+<!-- PORTFOLIO NAV -->
+<nav>
+  <span class="nav-logo" onclick="showView('home')">Anna Keerthana Shaji</span>
+  <ul class="nav-links">
+    <li><a href="#work" onclick="showView('home')">Work</a></li>
+    <li><a href="#about" onclick="showView('home')">About</a></li>
+    <li><a href="#contact" onclick="showView('home')">Contact</a></li>
+    <li><a href="mailto:annakeerthana@gmail.com" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- ======================== HOME VIEW ======================== -->
+<div id="view-home" class="view active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">UI/UX Designer · CUSAT · Kerala</div>
+      <h1>Anna<br/><em>Keerthana</em><br/>Shaji</h1>
+      <p class="hero-desc">I design digital experiences that are clear, accessible and genuinely useful with a focus on civic tech and social impact in India.</p>
+      <div class="hero-ctas">
+        <a href="#work" class="btn-p">View My Work</a>
+        <a href="#contact" class="btn-o">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="hero-visual-inner">
+          <div class="mock-bar accent"></div>
+          <div class="mock-bar medium"></div>
+          <div class="mock-bar short"></div>
+          <div class="mock-card">
+            <div class="mock-card-text">"Design is the<br/>silent ambassador<br/>of your brand."</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Projects Designed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      <div class="marquee-item">User Research <span class="dot"></span></div>
+      <div class="marquee-item">Figma <span class="dot"></span></div>
+      <div class="marquee-item">Interaction Design <span class="dot"></span></div>
+      <div class="marquee-item">Usability Testing <span class="dot"></span></div>
+      <div class="marquee-item">Information Architecture <span class="dot"></span></div>
+      <div class="marquee-item">Prototyping <span class="dot"></span></div>
+      <div class="marquee-item">Design Systems <span class="dot"></span></div>
+      <div class="marquee-item">Civic Tech <span class="dot"></span></div>
+      <div class="marquee-item">User Research <span class="dot"></span></div>
+      <div class="marquee-item">Figma <span class="dot"></span></div>
+      <div class="marquee-item">Interaction Design <span class="dot"></span></div>
+      <div class="marquee-item">Usability Testing <span class="dot"></span></div>
+      <div class="marquee-item">Information Architecture <span class="dot"></span></div>
+      <div class="marquee-item">Prototyping <span class="dot"></span></div>
+      <div class="marquee-item">Design Systems <span class="dot"></span></div>
+      <div class="marquee-item">Civic Tech <span class="dot"></span></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section-label">About Me</div>
+    <div class="about-grid">
+      <div class="fade-in">
+        <h2 class="about-heading">A designer who<br/>thinks in <em>systems</em></h2>
+        <p class="about-text">I'm Anna, a 2nd year B.Tech Computer Science and engineering student at Cochin University of Science and Technology (CUSAT). I'm passionate about the intersection of technology and human behaviour designing interfaces that feel intuitive, not overwhelming.</p>
+        <p class="about-text">My background in computer science gives me an edge: I understand technical constraints, which means my designs are not just beautiful they're buildable.</p>
+      </div>
+      <div class="fade-in">
+        <div class="skills-grid">
+          <div class="skill-pill">Figma</div>
+          <div class="skill-pill">Canva</div>
+          <div class="skill-pill">Wireframing</div>
+          <div class="skill-pill">Prototyping</div>
+          <div class="skill-pill">User Research</div>
+          <div class="skill-pill">UX Writing</div>
+          <div class="skill-pill">Design Thinking</div>
+          <div class="skill-pill">HTML & CSS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work-section" id="work">
+    <div class="section-label">Selected Work</div>
+    <h2 class="work-heading">Case <em>Studies</em></h2>
+
+    <!-- SWAYAM CASE STUDY -->
+    <div class="case-card fade-in">
+      <div class="case-card-header">
+        <!-- Live browser embed -->
+        <div class="browser-wrap">
+          <div class="browser-chrome">
+            <div class="b-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+            <div class="b-url">swayam-redesign.anna.design</div>
+            <button class="b-open" onclick="openSw()">↗ Full View</button>
+          </div>
+          <div class="b-live">
+            <div class="b-live-badge">Live Prototype</div>
+            <iframe class="proto-iframe" src="swayam-v2.html" title="Swayam Redesign" scrolling="yes"></iframe>
+          </div>
+        </div>
+        <!-- Case study info -->
+        <div class="case-content">
+          <div class="case-number">01</div>
+          <div class="case-type">UX Redesign · Government Education Portal</div>
+          <h3 class="case-title">Swayam NPTEL Portal Redesign</h3>
+          <p class="case-desc">India's national MOOC platform serves 4.2M+ learners but suffers from cluttered navigation, poor course discoverability, and an outdated UI that actively discourages engagement. I redesigned the full platform experience — catalog, course player, progress tracker, Q&A forum, and profile dashboard.</p>
+          <div class="outcome-grid">
+            <div class="outcome-item"><div class="out-num">5</div><div class="out-label">Screens Designed</div></div>
+            <div class="outcome-item"><div class="out-num">↑40%</div><div class="out-label">Discoverability</div></div>
+            <div class="outcome-item"><div class="out-num">4.2M</div><div class="out-label">Potential Users</div></div>
+          </div>
+          <div class="case-tags">
+            <span class="tag">User Research</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Information Architecture</span>
+            <span class="tag">Design Systems</span>
+            <span class="tag">Prototyping</span>
+          </div>
+          <button class="case-link" onclick="openSw()">Explore Prototype →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER CASE STUDY -->
+    <div class="case-card fade-in">
+      <div class="case-card-header" style="min-height:300px;">
+        <div style="background:#F0EBE3; display:flex; align-items:center; justify-content:center;">
+          <img src="images/mydesign.png" alt="mydesign" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="case-content">
+          <div class="case-number">02</div>
+          <div class="case-type">FrontEnd Development</div>
+          <h3 class="case-title">Declutter minds</h3>
+          <p class="case-desc">Designed and developed the frontend of a mental health platform with a clean user friendly interface inspired by modern streaming layouts</p>
+          <div class="case-tags">
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">HTML</span>
+          </div>
+          <a href="#contact" class="case-link">Contact Me →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section fade-in">
+    <div class="section-label">How I Work</div>
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Discover</div>
+        <p class="step-desc">Understanding the problem space through user research, competitive analysis, and empathy mapping.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">Define</div>
+        <p class="step-desc">Synthesising research into clear user needs, pain points, and design principles to guide the solution.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Design</div>
+        <p class="step-desc">Exploring ideas through wireframes, flows, and high fidelity prototypes in Figma iterating fast.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-title">Deliver</div>
+        <p class="step-desc">Validating with usability tests and refining until the experience feels effortless for the end user.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-label">Let's Work Together</div>
+    <h2 class="contact-heading">Open to<br/><em>Internships</em></h2>
+    <p class="contact-sub">
+      2nd Year B.Tech CSE · CUSAT · Kochi, Kerala<br/>
+      Available for UI/UX internships — remote or in Kerala
+    </p>
+    <div class="contact-links">
+      <a href="mailto:annakeerthanashaji@gmail.com" class="c-link primary">Email Me</a>
+      <a href="https://www.linkedin.com/in/anna-keerthana-shaji-91323b32a?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="c-link ghost">LinkedIn</a>
+      
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-logo">Anna Keerthana Shaji</span>
+    <span>© 2025 · Designed with intention</span>
+  </footer>
+</div>
+<!-- end home view -->
+
+<script>
+// View management
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + id);
+  if (el) el.classList.add('active');
+}
+
+// Open Swayam full prototype
+function openSw() {
+  document.getElementById('sw-page').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSw() {
+  document.getElementById('sw-page').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Scroll fade-in
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
